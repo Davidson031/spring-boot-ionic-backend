@@ -1,4 +1,4 @@
-package com.davidson.cursomc.domain;
+                                                                                                              package com.davidson.cursomc.domain;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -30,6 +30,9 @@ public class Cliente {
 	private String email;
 	private String cpfOuCnpj;
 	private Integer tipo;
+	
+	@OneToMany(mappedBy="cliente")
+	private List<Pedido> pedidos = new ArrayList<>();
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy="cliente")
@@ -105,6 +108,14 @@ public class Cliente {
 	public void setTelefones(Set<String> telefones) {
 		this.telefones = telefones;
 	}
+	
+	public List<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(List<Pedido> pedidos) {
+		this.pedidos = pedidos;
+	}
 
 	@Override
 	public int hashCode() {
@@ -122,6 +133,8 @@ public class Cliente {
 		Cliente other = (Cliente) obj;
 		return Objects.equals(id, other.id);
 	}
+
+	
 	
 	
 	
