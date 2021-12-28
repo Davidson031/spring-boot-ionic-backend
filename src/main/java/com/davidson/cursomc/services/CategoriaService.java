@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import com.davidson.cursomc.domain.Categoria;
+import com.davidson.cursomc.domain.Cliente;
 import com.davidson.cursomc.dto.CategoriaDTO;
 import com.davidson.cursomc.repositories.CategoriaRepository;
 import com.davidson.cursomc.services.exceptions.DateIntegrityException;
@@ -38,8 +39,9 @@ public class CategoriaService {
 	
 	public Categoria update(Categoria obj) {
 		
-		find(obj.getId());
-		return repo.save(obj);
+		Categoria newObj = find(obj.getId());
+		updateData(newObj, obj);
+		return repo.save(newObj);
 		
 	}
 	
@@ -67,5 +69,9 @@ public class CategoriaService {
 	public Categoria fromDTO(CategoriaDTO objDto) {
 		
 		return new Categoria(objDto.getId(), objDto.getNome());
+	}
+	
+	private void updateData(Categoria newObj, Categoria obj) {
+		newObj.setNome(obj.getNome());
 	}
 }
