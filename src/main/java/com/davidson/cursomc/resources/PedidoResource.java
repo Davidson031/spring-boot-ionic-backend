@@ -38,10 +38,10 @@ public class PedidoResource {
 		
 	}
 	
-	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Void>insert(@Valid @RequestBody Pedido obj){
+	@RequestMapping(method=RequestMethod.POST) //1)END POINT É ACIONADO
+	public ResponseEntity<Void>insert(@Valid @RequestBody Pedido obj){ //1.1 RECEBE O CORPO DO JSON E MAPEIA OS CAMPOS EM UM Pedido obj
 		
-		obj = service.insert(obj);
+		obj = service.insert(obj); //2 INICIA PROCESSO DE INSERÇÃO DE PEDIDO (PedidoService.java)
 		
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
