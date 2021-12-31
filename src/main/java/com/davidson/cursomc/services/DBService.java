@@ -66,7 +66,7 @@ public class DBService {
 				Categoria cat5 = new Categoria(null, "Jardinagem");
 				Categoria cat6 = new Categoria(null, "Decoração");
 				Categoria cat7 = new Categoria(null, "Perfumaria");
-				
+				Categoria cat8 = new Categoria(null, "Teste");
 				
 				//criando produtos
 				Produto p1 = new Produto(null, "Computador", 2000.00);
@@ -158,7 +158,7 @@ public class DBService {
 				
 				
 				//jogando no BD
-				categoriaRepository.saveAll(Arrays.asList(cat1, cat2, cat3, cat4, cat5, cat6, cat7));
+				categoriaRepository.saveAll(Arrays.asList(cat1, cat2, cat3, cat4, cat5, cat6, cat7, cat8));
 				produtoRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11));
 				estadoRepository.saveAll(Arrays.asList(est1, est2));
 				cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
