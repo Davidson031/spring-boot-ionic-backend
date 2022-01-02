@@ -32,7 +32,8 @@ public class PedidoService {
 	private ItemPedidoRepository itemPedidoRepository;
 	@Autowired
 	private ClienteService clienteService;
-	
+	@Autowired
+	private EmailService emailservice;
 	
 	
 	
@@ -84,7 +85,7 @@ public class PedidoService {
 		
 		
 		
-		System.out.println(obj);
+		emailservice.sendOrderConfirmationEmail(obj);
 		return obj; 
 		
 		
