@@ -10,6 +10,7 @@ import com.davidson.cursomc.domain.ItemPedido;
 import com.davidson.cursomc.domain.PagamentoComBoleto;
 import com.davidson.cursomc.domain.Pedido;
 import com.davidson.cursomc.domain.enums.EstadoPagamento;
+import com.davidson.cursomc.repositories.ClienteRepository;
 import com.davidson.cursomc.repositories.ItemPedidoRepository;
 import com.davidson.cursomc.repositories.PagamentoRepository;
 import com.davidson.cursomc.repositories.PedidoRepository;
@@ -29,6 +30,8 @@ public class PedidoService {
 	private ProdutoService produtoService;
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
+	@Autowired
+	private ClienteService clienteService;
 	
 	
 	
@@ -43,17 +46,20 @@ public class PedidoService {
 	} 
 	
 	
-	public Pedido insert(Pedido obj) { //3) RECEBE UM OBJETO DO TIPO "Pedido" PARA SER CADASTRADO
+	public Pedido insert(Pedido obj) { 
 		
-		obj.setId(null); //3.1 PREPARANDO "Pedido" 
+		obj.setId(null);
 	
-		obj.setInstante(new Date()); //3.2 PREPARANDO "Pedido" 
+		obj.setInstante(new Date()); 
+		
+		obj.setCliente(clienteService.find(obj.getCliente().getId()));
 	
-		obj.getPagamento().setEstado(EstadoPagamento.PENDENTE); //4) SETA O PAGAMENTO DO PEDIDO PARA PENDENTE
+		obj.getPagamento().setEstado(EstadoPagamento.PENDENTE); 
 		
-		obj.getPagamento().setPedido(obj); //5) SETA O PEDIDO DO PAGAMENTO
+		obj.getPagamento().setPedido(obj);
 		
-		if(obj.getPagamento() instanceof PagamentoComBoleto) { //6 CUIDA DA DATA DE VCTO DO PAGAMENTO CASO SEJA POR BOLETO
+		
+		if(obj.getPagamento() instanceof PagamentoComBoleto) {
 			
 			PagamentoComBoleto pgto = (PagamentoComBoleto)obj.getPagamento();
 			boletoService.preencherPagamentoComBoleto(pgto, obj.getInstante());
@@ -61,20 +67,25 @@ public class PedidoService {
 		
 		
 		
-		obj = repo.save(obj); //7 SALVANDO PEDIDO NO BD 
-		pagamentoRepository.save(obj.getPagamento()); //8 SALVANDO O PAGAMENTO NO BD
+		obj = repo.save(obj); 
+		pagamentoRepository.save(obj.getPagamento());
 		
 		
 		
-		for(ItemPedido ip: obj.getItens()) { //9) PERCORRE A LISTA DE ITENS DESSE PEDIDO
+		for(ItemPedido ip: obj.getItens()) { 
 			
-			ip.setDesconto(0.0); //9.1) SETA OS DESCONTOS P/ 0.
-			ip.setPreco(produtoService.find(ip.getProduto().getId()).getPreco()); //9.2) ENCONTRA O PREÇO DE UM PRODUTO(PELO ID) USANDO PRODUTOSERVICE E O SETA NO ITEMPEDIDO.
-			ip.setPedido(obj); //10) CADA ITEMPEDIDO TEM QUE SE REFERENCIAR A UM PEDIDO.
+			ip.setDesconto(0.0); 
+			ip.setProduto(produtoService.find(ip.getProduto().getId()));
+			ip.setPreco(ip.getProduto().getPreco()); 
+			ip.setPedido(obj); 
 		}
 		
-		itemPedidoRepository.saveAll(obj.getItens()); //SALVANDO OS ITENSPEDIDOS NO BD.
-		return obj; //RETORNA.
+		itemPedidoRepository.saveAll(obj.getItens()); 
+		
+		
+		
+		System.out.println(obj);
+		return obj; 
 		
 		
 	}
