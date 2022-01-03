@@ -9,6 +9,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import com.davidson.cursomc.services.DBService;
+import com.davidson.cursomc.services.EmailService;
+import com.davidson.cursomc.services.MockEmailService;
+import com.davidson.cursomc.services.SmtpEmailService;
 
 @Configuration
 @Profile("dev")//Beans de config daqui só serão ativos quando o properties ativado for o application-test
@@ -31,6 +34,11 @@ public class DevConfig {
 		dbService.instantiateTestDatabase();
 		
 		return true;
+	}
+	
+	@Bean
+	public EmailService emailservice() {
+		return new SmtpEmailService();
 	}
 
 }

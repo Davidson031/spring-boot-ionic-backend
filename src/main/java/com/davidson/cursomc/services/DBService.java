@@ -91,7 +91,7 @@ public class DBService {
 				Cidade c3 = new Cidade(null, "Campinas", est2);
 				
 				//criando clientes
-				Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "21421545479", TipoCliente.PESSOAFISICA);
+				Cliente cli1 = new Cliente(null, "Maria Silva", "davidson0031@gmail.com", "21421545479", TipoCliente.PESSOAFISICA);
 				
 				//criando endereços
 				Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 303", "Jardim", "38220834", cli1, c1);

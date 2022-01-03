@@ -32,6 +32,8 @@ public class PedidoService {
 	private ItemPedidoRepository itemPedidoRepository;
 	@Autowired
 	private ClienteService clienteService;
+	
+	
 	@Autowired
 	private EmailService emailservice;
 	
@@ -83,9 +85,13 @@ public class PedidoService {
 		
 		itemPedidoRepository.saveAll(obj.getItens()); 
 		
+
+		
+
+		
+		emailservice.sendOrderConfirmationHtmlEmail(obj);
 		
 		
-		emailservice.sendOrderConfirmationEmail(obj);
 		return obj; 
 		
 		
