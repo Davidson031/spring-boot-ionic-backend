@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.davidson.cursomc.domain.Categoria;
@@ -19,6 +20,7 @@ import com.davidson.cursomc.domain.PagamentoComCartao;
 import com.davidson.cursomc.domain.Pedido;
 import com.davidson.cursomc.domain.Produto;
 import com.davidson.cursomc.domain.enums.EstadoPagamento;
+import com.davidson.cursomc.domain.enums.Perfil;
 import com.davidson.cursomc.domain.enums.TipoCliente;
 import com.davidson.cursomc.repositories.CategoriaRepository;
 import com.davidson.cursomc.repositories.CidadeRepository;
@@ -35,6 +37,8 @@ import com.davidson.cursomc.repositories.ProdutoRepository;
 public class DBService {
 
 	//dependencias
+		@Autowired
+		private BCryptPasswordEncoder pe;
 		@Autowired
 		private CategoriaRepository categoriaRepository;
 		@Autowired
@@ -91,12 +95,12 @@ public class DBService {
 				Cidade c3 = new Cidade(null, "Campinas", est2);
 				
 				//criando clientes
-				Cliente cli1 = new Cliente(null, "Maria Silva", "davidson0031@gmail.com", "21421545479", TipoCliente.PESSOAFISICA);
-				
+				Cliente cli1 = new Cliente(null, "Maria Silva", "davidson0031@gmail.com", "21421545479", TipoCliente.PESSOAFISICA, pe.encode("123"));
+				Cliente cli2 = new Cliente(null, "João Pedro", "davidson@gmail.com", "97160293061", TipoCliente.PESSOAFISICA, pe.encode("123"));
 				//criando endereços
 				Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 303", "Jardim", "38220834", cli1, c1);
 				Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "88751541", cli1, c2);
-				
+				Endereco e3 = new Endereco(null, "Avenida 1", "105", "Sala 8", "Centro", "22751741", cli2, c2);
 				//criando pedidos
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 				Pedido ped1 = new Pedido(null, sdf.parse("30/09/2017 10:32"), cli1, e1);
@@ -114,11 +118,11 @@ public class DBService {
 				
 				//adicionando enderecos aos clientes
 				cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
-				
+				cli2.getEnderecos().addAll(Arrays.asList(e3));
 				
 				//adicionando telefones aos clientes
 				cli1.getTelefones().addAll(Arrays.asList("4575-8741", "4475-8574"));
-				
+				cli2.getTelefones().addAll(Arrays.asList("8888-8888", "9999-9999"));
 				
 				//adicionando cidades aos estados
 				est1.getCidades().addAll(Arrays.asList(c1));
@@ -148,6 +152,7 @@ public class DBService {
 
 				
 				//misc
+				cli2.addPerfil(Perfil.ADMIN);
 				ped1.setPagamento(pagto1);
 				ped2.setPagamento(pagto2);
 				cli1.getPedidos().addAll(Arrays.asList(ped1, ped2));
@@ -163,8 +168,8 @@ public class DBService {
 				produtoRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11));
 				estadoRepository.saveAll(Arrays.asList(est1, est2));
 				cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
-				clienteRepository.saveAll(Arrays.asList(cli1));
-				enderecoRepository.saveAll(Arrays.asList(e1, e2));
+				clienteRepository.saveAll(Arrays.asList(cli1, cli2));
+				enderecoRepository.saveAll(Arrays.asList(e1, e2, e3));
 				pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
 				pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
 				itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
