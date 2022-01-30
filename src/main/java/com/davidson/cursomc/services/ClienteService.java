@@ -15,12 +15,15 @@ import com.davidson.cursomc.domain.Categoria;
 import com.davidson.cursomc.domain.Cidade;
 import com.davidson.cursomc.domain.Cliente;
 import com.davidson.cursomc.domain.Endereco;
+import com.davidson.cursomc.domain.enums.Perfil;
 import com.davidson.cursomc.domain.enums.TipoCliente;
 import com.davidson.cursomc.domain.Cliente;
 import com.davidson.cursomc.dto.ClienteDTO;
 import com.davidson.cursomc.dto.ClienteNewDTO;
 import com.davidson.cursomc.repositories.ClienteRepository;
 import com.davidson.cursomc.repositories.EnderecoRepository;
+import com.davidson.cursomc.security.UserSS;
+import com.davidson.cursomc.services.exceptions.AuthorizationException;
 import com.davidson.cursomc.services.exceptions.DateIntegrityException;
 import com.davidson.cursomc.services.exceptions.ObjectNotFoundException;
 
@@ -34,12 +37,29 @@ public class ClienteService {
 	@Autowired
 	private EnderecoRepository enderecoRepository;
 	
+	
+	
+	
+	
+	
 	public Cliente find (Integer id) { 
+		
+		
+		UserSS user = UserService.authenticated();
+		
+		if(user==null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+			throw new AuthorizationException("Acesso Negado");
+		}
 		
 		Optional<Cliente> obj = repo.findById(id); 
 		
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName())); 
 	} 
+	
+	
+	
+	
+	
 	
 	public Cliente insert(Cliente obj) {
 		

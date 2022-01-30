@@ -104,7 +104,16 @@ public class DBService {
 				//criando pedidos
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 				Pedido ped1 = new Pedido(null, sdf.parse("30/09/2017 10:32"), cli1, e1);
-				Pedido ped2 = new Pedido(null, sdf.parse("10/10/2017 19:35"), cli1, e2);
+				Pedido ped2 = new Pedido(null, sdf.parse("11/10/2017 19:35"), cli1, e2);
+				Pedido ped3 = new Pedido(null, sdf.parse("12/10/2017 19:35"), cli1, e2);
+				Pedido ped4 = new Pedido(null, sdf.parse("13/10/2017 19:35"), cli1, e2);
+				Pedido ped5 = new Pedido(null, sdf.parse("14/10/2017 19:35"), cli1, e2);
+				
+				
+				Pedido ped6 = new Pedido(null, sdf.parse("10/10/2017 11:35"), cli2, e2);
+				Pedido ped7 = new Pedido(null, sdf.parse("10/10/2017 12:35"), cli2, e2);
+				Pedido ped8 = new Pedido(null, sdf.parse("10/10/2017 13:35"), cli2, e2);
+				
 				
 				//criando pagamentos
 				Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
@@ -170,7 +179,7 @@ public class DBService {
 				cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
 				clienteRepository.saveAll(Arrays.asList(cli1, cli2));
 				enderecoRepository.saveAll(Arrays.asList(e1, e2, e3));
-				pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
+				pedidoRepository.saveAll(Arrays.asList(ped1, ped2, ped3, ped4, ped5, ped6,ped7,ped8));
 				pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
 				itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
 		
