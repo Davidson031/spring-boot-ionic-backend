@@ -97,10 +97,12 @@ public class DBService {
 				//criando clientes
 				Cliente cli1 = new Cliente(null, "Maria Silva", "davidson0031@gmail.com", "21421545479", TipoCliente.PESSOAFISICA, pe.encode("123"));
 				Cliente cli2 = new Cliente(null, "João Pedro", "davidson@gmail.com", "97160293061", TipoCliente.PESSOAFISICA, pe.encode("123"));
+				Cliente cli3 = new Cliente(null, "Nathalia", "nathalia@gmail.com", "123456789", TipoCliente.PESSOAFISICA, pe.encode("123"));
 				//criando endereços
 				Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 303", "Jardim", "38220834", cli1, c1);
 				Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "88751541", cli1, c2);
 				Endereco e3 = new Endereco(null, "Avenida 1", "105", "Sala 8", "Centro", "22751741", cli2, c2);
+				Endereco e4 = new Endereco(null, "Avenida 10", "10", "Sala 10", "Centro", "22871741", cli3, c2);
 				//criando pedidos
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 				Pedido ped1 = new Pedido(null, sdf.parse("30/09/2017 10:32"), cli1, e1);
@@ -114,7 +116,7 @@ public class DBService {
 				Pedido ped7 = new Pedido(null, sdf.parse("10/10/2017 12:35"), cli2, e2);
 				Pedido ped8 = new Pedido(null, sdf.parse("10/10/2017 13:35"), cli2, e2);
 				
-				
+				Pedido ped9 = new Pedido(null, sdf.parse("10/10/2017 13:35"), cli3, e2);
 				//criando pagamentos
 				Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
 				Pagamento pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2, sdf.parse("20/10/2017 00:00"), null);
@@ -123,7 +125,7 @@ public class DBService {
 				ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
 				ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00);
 				ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
-			
+				ItemPedido ip4 = new ItemPedido(ped9, p2, 100.00, 1, 1000.00);
 				
 				//adicionando enderecos aos clientes
 				cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
@@ -164,12 +166,15 @@ public class DBService {
 				cli2.addPerfil(Perfil.ADMIN);
 				ped1.setPagamento(pagto1);
 				ped2.setPagamento(pagto2);
-				cli1.getPedidos().addAll(Arrays.asList(ped1, ped2));
+				cli1.getPedidos().addAll(Arrays.asList(ped1, ped2, ped3, ped4, ped5));
+				cli2.getPedidos().addAll(Arrays.asList(ped6, ped7, ped8));
+				cli3.getPedidos().addAll(Arrays.asList(ped6, ped7, ped8));
 				ped1.getItens().addAll(Arrays.asList(ip1, ip2));
 				ped2.getItens().addAll(Arrays.asList(ip3));
 				p1.getItens().addAll(Arrays.asList(ip1));
 				p2.getItens().addAll(Arrays.asList(ip3));
 				p3.getItens().addAll(Arrays.asList(ip2));
+				ped9.getItens().addAll(Arrays.asList(ip4));
 				
 				
 				//jogando no BD
@@ -177,11 +182,11 @@ public class DBService {
 				produtoRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11));
 				estadoRepository.saveAll(Arrays.asList(est1, est2));
 				cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
-				clienteRepository.saveAll(Arrays.asList(cli1, cli2));
+				clienteRepository.saveAll(Arrays.asList(cli1, cli2, cli3));
 				enderecoRepository.saveAll(Arrays.asList(e1, e2, e3));
-				pedidoRepository.saveAll(Arrays.asList(ped1, ped2, ped3, ped4, ped5, ped6,ped7,ped8));
+				pedidoRepository.saveAll(Arrays.asList(ped1, ped2, ped3, ped4, ped5, ped6,ped7,ped8, ped9));
 				pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
-				itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
+				itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3, ip4));
 		
 	}
 }
