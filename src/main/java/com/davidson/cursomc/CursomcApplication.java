@@ -30,12 +30,14 @@ import com.davidson.cursomc.repositories.ItemPedidoRepository;
 import com.davidson.cursomc.repositories.PagamentoRepository;
 import com.davidson.cursomc.repositories.PedidoRepository;
 import com.davidson.cursomc.repositories.ProdutoRepository;
+import com.davidson.cursomc.services.S3Service;
 
 @SpringBootApplication
 public class CursomcApplication implements CommandLineRunner {
 
 	
-	
+	@Autowired
+	private S3Service s3Service;
 	
 	
 	public static void main(String[] args) {
@@ -45,7 +47,7 @@ public class CursomcApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		
+		s3Service.uploadFile("C:\\temp\\rabisco.jpg");
 		
 	}
 
