@@ -57,6 +57,10 @@ public class Cliente {
 	@CollectionTable(name="TELEFONE")
 	private Set<String> telefones = new HashSet<>();
 	
+	
+	private String imageUrl;
+	
+	
 	public Cliente() {
 		addPerfil(Perfil.CLIENTE);
 	}
@@ -166,6 +170,14 @@ public class Cliente {
 			return false;
 		Cliente other = (Cliente) obj;
 		return Objects.equals(id, other.id);
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
 	
