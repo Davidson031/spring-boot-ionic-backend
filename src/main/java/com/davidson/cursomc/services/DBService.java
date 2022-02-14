@@ -163,6 +163,7 @@ public class DBService {
 
 				
 				//misc
+				
 				cli2.addPerfil(Perfil.ADMIN);
 				ped1.setPagamento(pagto1);
 				ped2.setPagamento(pagto2);

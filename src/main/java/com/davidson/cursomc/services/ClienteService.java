@@ -1,6 +1,7 @@
 package com.davidson.cursomc.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -9,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -40,9 +42,11 @@ public class ClienteService {
 	private EnderecoRepository enderecoRepository;
 	@Autowired
 	private S3Service s3Service;
+	@Autowired
+	private ImageService imageService;
 	
-	
-	
+	@Value("${img.prefix.client.profile}")
+	private String prefix;
 	
 	
 	public Cliente find (Integer id) { 
@@ -58,9 +62,6 @@ public class ClienteService {
 		
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName())); 
 	} 
-	
-	
-	
 	
 	
 	
@@ -94,6 +95,24 @@ public class ClienteService {
 		return repo.findAll();
 		
 	}
+	
+	
+	public Cliente findByEmail(String email) {
+		
+		UserSS user = UserService.authenticated();
+		if (user == null || !user.hasRole(Perfil.ADMIN) && !email.equals(user.getUsername())) {
+			throw new AuthorizationException("Acesso negado");
+		}
+	
+		Cliente obj = repo.findByEmail(email);
+		if (obj == null) {
+			throw new ObjectNotFoundException(
+					"Objeto não encontrado! Id: " + user.getId() + ", Tipo: " + Cliente.class.getName());
+		}
+		return obj;	
+	}
+	
+	
 	
 	public Page<Cliente> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
 		
@@ -139,14 +158,14 @@ public class ClienteService {
 		if(user == null) {
 			throw new AuthorizationException("Acesso Negado");
 		}
+				
+		BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
+		String fileName = prefix + user.getId() + ".jpg";
 		
-		URI uri = s3Service.uploadFile(multipartFile);
 		
-		Cliente cli = find(user.getId());
-		cli.setImageUrl(uri.toString());
-		repo.save(cli);
-		return uri;
 		
+		return s3Service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image");
+			
 	}
 	
 	

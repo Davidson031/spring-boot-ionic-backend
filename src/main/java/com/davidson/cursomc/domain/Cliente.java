@@ -57,8 +57,7 @@ public class Cliente {
 	@CollectionTable(name="TELEFONE")
 	private Set<String> telefones = new HashSet<>();
 	
-	
-	private String imageUrl;
+
 	
 	
 	public Cliente() {
@@ -172,14 +171,7 @@ public class Cliente {
 		return Objects.equals(id, other.id);
 	}
 
-	public String getImageUrl() {
-		return imageUrl;
-	}
-
-	public void setImageUrl(String imageUrl) {
-		this.imageUrl = imageUrl;
-	}
-
+ 
 	
 
 	
