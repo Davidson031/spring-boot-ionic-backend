@@ -21,8 +21,7 @@ import com.davidson.cursomc.security.JWTAuthenticationFilter;
 import com.davidson.cursomc.security.JWTAuthorizationFilter;
 import com.davidson.cursomc.security.JWTUtil;
 
-import io.jsonwebtoken.lang.Arrays;
-
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -79,8 +78,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {
+		
+		CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
+		configuration.setAllowedMethods(Arrays.asList("POST", "GET", "PUT", "DELETE", "OPTIONS"));
+		
+		
 		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+		source.registerCorsConfiguration("/**", configuration);
 		return source;
 	}
 	
